@@ -16,7 +16,7 @@ pg.connect(process.env.DATABASE_URL+'?ssl=true', function(err, client, done) {
   client.query('SELECT twitter_handle__c, sfid '+
                'FROM salesforce.contact '+
                'WHERE contact.twitter_handle__c IS NOT NULL', function(err, result) {
-    if (err) { 
+    if (err) {
       console.error(err);
     } else {
       var contacts = {};
@@ -28,7 +28,7 @@ pg.connect(process.env.DATABASE_URL+'?ssl=true', function(err, client, done) {
       client.query('SELECT hashtag__c, sfid '+
                    'FROM salesforce.campaign '+
                    'WHERE campaign.hashtag__c IS NOT NULL', function(err, result) {
-        if (err) { 
+        if (err) {
           console.error(err);
         } else {
           var campaigns = result.rows;
@@ -42,7 +42,7 @@ pg.connect(process.env.DATABASE_URL+'?ssl=true', function(err, client, done) {
           tw.stream('statuses/filter', {track: query}, function(stream) {
             stream.on('data', function(tweet) {
               console.log('Tweet: ',tweet);
-              if (contacts[tweet.user.screen_name]) {
+              if (contacts[(tweet.user.screen_name).toLowerCase()]) {
                 campaigns.forEach(function(campaign){
                   if (tweet.text.toLowerCase().indexOf(campaign.hashtag__c.toLowerCase()) !== -1) {
                     console.log('Inserting: ', tweet.id_str, contacts[tweet.user.screen_name].sfid, campaign.sfid, tweet.text);
@@ -59,12 +59,12 @@ pg.connect(process.env.DATABASE_URL+'?ssl=true', function(err, client, done) {
                 });
               }
             });
-           
+
             stream.on('error', function(error) {
               console.error(error);
               throw error;
             });
-          }); 
+          });
         }
       });
     }
