@@ -11,19 +11,19 @@
   "env": {
     "TWITTER_CONSUMER_KEY": {
       "description": "Your Twitter app Consumer Key",
-      "required": true
+      "value": "Change me"
     },
     "TWITTER_CONSUMER_SECRET": {
       "description": "Your Twitter app Consumer Secret",
-      "required": true
+      "value": "Change me"
     },
     "TWITTER_ACCESS_TOKEN_KEY": {
       "description": "Your Twitter app Access Token Key",
-      "required": true
+      "value": "Change me"
     },
     "TWITTER_ACCESS_TOKEN_SECRET": {
       "description": "Your Twitter app Access Token Secret",
-      "required": true
+      "value": "Change me"
     }
   },
   "addons": ["heroku-postgresql", "herokuconnect:demo"]
