@@ -42,10 +42,13 @@ pg.connect(process.env.DATABASE_URL+'?ssl=true', function(err, client, done) {
           tw.stream('statuses/filter', {track: query}, function(stream) {
             stream.on('data', function(tweet) {
               console.log('Tweet: ',tweet);
+              if (contacts[tweet.user.screen_name.toLowerCase()]) {
                 campaigns.forEach(function(campaign){
                   if (tweet.text.toLowerCase().indexOf(campaign.hashtag__c.toLowerCase()) !== -1) {
+                    console.log('Inserting: ', tweet.id_str, contacts[tweet.user.screen_name.toLowerCase()].sfid, campaign.sfid, tweet.text);
                     var insert = 'INSERT INTO salesforce.tweet__c(name, contact__c, campaign__c, text__c) '+
                                  'VALUES($1, $2, $3, $4)';
+                    client.query(insert, [tweet.id_str, contacts[tweet.user.screen_name.toLowerCase()].sfid, campaign.sfid, tweet.text], function(err, result) {
                       if(err) {
                         console.error(err);
                       } else {
