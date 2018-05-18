@@ -44,7 +44,7 @@ pg.connect(process.env.DATABASE_URL+'?ssl=true', function(err, client, done) {
               console.log('Tweet: ',tweet);
               if (contacts[tweet.user.screen_name.toLowerCase()]) {
                 campaigns.forEach(function(campaign){
-                  if (tweet.text.toLowerCase().indexOf(campaign.hashtag__c.toLowerCase()) !== -1) {
+                  if (tweet.text.toLowerCase().indexOf(campaign.hashtag__c.toLowerCase()) !== -1) {console.log('In insert block');
                     console.log('Inserting: ', tweet.id_str, contacts[tweet.user.screen_name.toLowerCase()].sfid, campaign.sfid, tweet.text);
                     var insert = 'INSERT INTO salesforce.tweet__c(name, contact__c, campaign__c, text__c) '+
                                  'VALUES($1, $2, $3, $4)';
